@@ -10,10 +10,10 @@ mongoose.connect('mongodb://localhost/recipeAppDB')
   });
 
 const recipeSchema = new Schema({
-  title       : {type: String, required: true, unique: true},
-  level       : {type: String, required: true, enum: ['Easy Peasy', 'Amateur Chef', 'UltraPro Chef']},
+  title       : {type: String, required: false, unique: true},
+  level       : {type: String, required: false, enum: ['Easy Peasy', 'Amateur Chef', 'UltraPro Chef']},
   ingredients : {type: Array},
-  cousine     : {type: String, required: true},
+  cousine     : {type: String, required: false},
   dishType    : {type: String, enum:['Breakfast','Dish','Snack','Drink','Dessert','Other']},
   image       : {type: String, default: 'https://images.media-allrecipes.com/images/75131.jpg'},
   duration    : {type: Number, min:0},
@@ -23,18 +23,31 @@ const recipeSchema = new Schema({
 
 const Recipe = mongoose.model('Recipe',recipeSchema);
 
-Recipe.create({ 
-  title       : 'tacos',
-  level       : 'Easy Peasy',
-  ingredients : ['tortillas','Carne'],
-  cousine     : 'mexican',
-  dishType    : 'Snack',
-  image       : 'https://vignette.wikia.nocookie.net/apocalypserisingmanual/images/d/dd/Taco.jpg/revision/latest?cb=20170823134716',
-  duration    : 10,
-  creator     : 'Andrey'
-})
-  .then((Recipe) => { console.log('The user is saved and its value is: ', Recipe) })
+Recipe.findOneAndUpdate({name:"Rigatoni alla Genovese"},
+{ 
+  duration   : 100
+}
+)
+  .then((Recipe) => { console.log('The recipe updated: ', Recipe) })
   .catch((err) => { console.log('An error happened:', err) });
+
+
+// Recipe.insertMany(data)
+//   .then((Recipe) => { console.log('The user is saved and its value is: ', Recipe) })
+//   .catch((err) => { console.log('An error happened:', err) });
+
+// Recipe.create({ 
+//   title       : 'tacos',
+//   level       : 'Easy Peasy',
+//   ingredients : ['tortillas','Carne'],
+//   cousine     : 'mexican',
+//   dishType    : 'Snack',
+//   image       : 'https://vignette.wikia.nocookie.net/apocalypserisingmanual/images/d/dd/Taco.jpg/revision/latest?cb=20170823134716',
+//   duration    : 10,
+//   creator     : 'Andrey'
+// })
+//   .then((Recipe) => { console.log('The user is saved and its value is: ', Recipe) })
+//   .catch((err) => { console.log('An error happened:', err) });
 
 // title. Type String. It should be required and unique.
 // level. Type String. Only can be one of the following values: Easy Peasy - Amateur Chef - UltraPro Chef (remember the ENUM 😉)
